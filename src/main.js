@@ -1,4 +1,5 @@
 import './assets/main.css';
+import './style/nav.css';
 
 
 import { createApp } from 'vue';
