@@ -9,6 +9,7 @@ import { usePaginationStore } from '../stores/paginationStore.js';
 // 狀態
 const products = ref([]);
 const pages = usePaginationStore();
+const selectedCategory = ref('');
 
 //生命週期
 onMounted(() => {
@@ -31,8 +32,25 @@ async function getProducts() {
 const paginatedItems = computed(() => {
   const startIndex = (pages.currentPage - 1) * pages.itemsPerPage;
   const endIndex = startIndex + pages.itemsPerPage;
-  return products.value.slice(startIndex, endIndex)
-})
+  //return products.value.slice(startIndex, endIndex)
+  return filteredItems.value.slice(startIndex, endIndex);
+});
+//課程分類
+const filteredItems = computed(() => {
+  if (selectedCategory.value === '') {
+    return products.value;
+  } else {
+    return products.value.filter(item => item.category === selectedCategory.value);
+  }
+});
+function filterByCategory(category) {
+  console.log(category)
+  selectedCategory.value = category;
+  const filteredProducts = filteredItems.value;
+  const totalPages = Math.ceil(filteredProducts.length / pages.itemsPerPage);
+  pages.totalPages = totalPages;
+  pages.setCurrentPage(1);
+};
 
 </script>
 
@@ -60,21 +78,26 @@ const paginatedItems = computed(() => {
       <input class="btn btn-secondary text-end" type="button" value="預約免費體驗->">
     </div>
   </div>
-  <div class="bg-dark">
-    <div class="container pt-5 ">
+  <div>
+    <div class="container pt-5 px-5">
       <div class="row ">
         <div class="col-md-3">
           <div class="list-group" id="list-tab" role="tablist">
             <a class="list-group-item list-group-item-action active border-bottom" id="list-home-list"
-              data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">所有課程</a>
+              data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home"
+              @click.prevent="filterByCategory('')">所有課程</a>
             <a class="list-group-item list-group-item-action border-bottom" id="list-profile-list" data-bs-toggle="list"
-              href="#list-profile" role="tab" aria-controls="list-profile">瑜珈課程</a>
+              href="#list-profile" role="tab" aria-controls="list-profile"
+              @click.prevent="filterByCategory('瑜珈')">瑜珈課程</a>
             <a class="list-group-item list-group-item-action border-bottom" id="list-messages-list" data-bs-toggle="list"
-              href="#list-messages" role="tab" aria-controls="list-messages">有氧課程</a>
+              href="#list-messages" role="tab" aria-controls="list-messages"
+              @click.prevent="filterByCategory('有氧')">有氧課程</a>
             <a class="list-group-item list-group-item-action border-bottom" id="list-settings-list" data-bs-toggle="list"
-              href="#list-settings" role="tab" aria-controls="list-settings">飲食課程</a>
+              href="#list-settings" role="tab" aria-controls="list-settings"
+              @click.prevent="filterByCategory('飲食')">飲食課程</a>
             <a class="list-group-item list-group-item-action border-bottom" id="list-settings-list" data-bs-toggle="list"
-              href="#list-settings" role="tab" aria-controls="list-settings">器材課程</a>
+              href="#list-settings" role="tab" aria-controls="list-settings"
+              @click.prevent="filterByCategory('器材')">器材課程</a>
           </div>
         </div>
         <div class="container col-md-9">
@@ -102,6 +125,7 @@ const paginatedItems = computed(() => {
                 </div>
               </a>
             </div>
+
             <pagination :pages="pages" :get-products="getProducts"></pagination>
 
           </div>
@@ -109,4 +133,30 @@ const paginatedItems = computed(() => {
       </div>
     </div>
   </div>
+  <footer class="py-4 bg-primary-lighter pb-5 mb-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8"></div>
+        <div class="col-md-4 d-flex flex-column justify-content-between text-white " style="text-align:left">
+
+          <ul class="list-unstyled">
+            <li><label class=" fw-bold text-white fs-3 ">Contact Us</label>
+            </li>
+            <li><label class="px-2">地址</label><label class="text-white-50 ">/ 404台中市西屯區台灣大道三段99號</label>
+            </li>
+            <li><label class="px-2">信箱</label><label class="text-white-50 ">/ move_up@gmail.com</label></li>
+            <li><label class="px-2">手機</label><label class="text-white-50 ">/ 04-12345678</label></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <hr class="text-white-50">
+        <div class="col-md-5 text-md-right mt-2 text-white-50">
+          <span>© Copyright 2023 | 動起來~運動有限公司</span>
+          <i class="bi bi-facebook"></i>
+          <i class="bi bi-instagram"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
 </template>
