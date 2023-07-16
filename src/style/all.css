@@ -10,10 +10,7 @@
   }
   .demo{line-height: 180%;/*表示段落其他小字要放大的行高*/
   text-align:justify;}
-  .bg-color{
-      background-color : #202020;
-
-  }
+ 
   .text-color-1 {
       color: #BDFF00;
   }
@@ -112,7 +109,7 @@ font-variation-settings:
 }
 .list-group{
   --bs-list-group-active-bg: #00D27A;
-    --bs-list-group-active-border-color: #00D27A;
+  --bs-list-group-active-border-color: #00D27A;
   --bs-list-group-action-hover-bg:#00D27A;
 }
 .list-group-item {
@@ -136,7 +133,7 @@ border-bottom{
 }
 .active>.page-link, .page-link.active {
   z-index: 3;
-  color: var(--bs-pagination-active-color);
+  /* color: var(--bs-pagination-active-color); */
   background-color: #414666;;
   border-color:#414666;;
 }
