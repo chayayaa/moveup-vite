@@ -20,7 +20,7 @@
                         <a class="nav-link ">預約體驗</a>
                     </li>
                 </ul>
-                <a class=" text-color-2 fs-4">
+                <a class=" text-color-2 fs-4" href="/#/cart">
                     <i class="bi bi-cart4"></i>
                 </a>
             </div>

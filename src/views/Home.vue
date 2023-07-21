@@ -28,6 +28,19 @@ async function getProducts() {
     console.log(err);
   }
 };
+
+async function addCartItem() {
+  try {
+    const res = await api.addCartAPI();
+    products.value = res.data.products;
+    const totalPages = Math.ceil(products.value.length / pages.itemsPerPage);
+    pages.totalPages = totalPages;
+    console.log(products.value);
+  }
+  catch (err) {
+    console.log(err);
+  }
+};
 //根據當前頁與每頁數量計算分頁資料
 const paginatedItems = computed(() => {
   const startIndex = (pages.currentPage - 1) * pages.itemsPerPage;
