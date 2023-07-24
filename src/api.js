@@ -27,8 +27,9 @@ export function deleteCartAPI(id) {
 };
 
 //新增購物車
-export function addCartAPI() {
+export function addCartAPI(orderData) {
   const url = `${apiUrl}/api/${apiPath}/cart`;
   console.log(url);
-  return axios.post(url);
+  console.log({data:orderData})
+  return axios.post(url,{data:orderData});
 };

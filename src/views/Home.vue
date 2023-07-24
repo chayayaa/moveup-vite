@@ -5,11 +5,13 @@ import * as api from '@/api.js'
 import Nav from '../components/NavComponent.vue'
 import Pagination from '../components/Pagination.vue'
 import { usePaginationStore } from '../stores/paginationStore.js';
+import Swal from 'sweetalert2';
 
 // 狀態
 const products = ref([]);
 const pages = usePaginationStore();
 const selectedCategory = ref('');
+
 
 //生命週期
 onMounted(() => {
@@ -29,16 +31,29 @@ async function getProducts() {
   }
 };
 
-async function addCartItem() {
+async function addCartItem(id) {
   try {
-    const res = await api.addCartAPI();
-    products.value = res.data.products;
-    const totalPages = Math.ceil(products.value.length / pages.itemsPerPage);
-    pages.totalPages = totalPages;
-    console.log(products.value);
+    const orderData={
+      product_id: id,
+      qty: 1
+    };
+    const res = await api.addCartAPI(orderData);
+    if (res.data.success) {
+      Swal.fire({
+        title: '成功!',
+        text: '已加入購物車',
+        icon: 'success'
+      })
+    }
   }
   catch (err) {
     console.log(err);
+    Swal.fire({
+      title: '失敗!',
+      text: '請聯繫客服',
+      allowOutsideClick: false,
+      icon: 'error'
+    })
   }
 };
 //根據當前頁與每頁數量計算分頁資料
@@ -132,7 +147,7 @@ function filterByCategory(category) {
                     </p>
                     <div class="btn-group d-flex justify-content-center">
                       <a href="#" class="btn  py-2 px-5 z-20 text-white fw-bold" style="background-color: #00D27A;"
-                        @click.prevent="addToCart(product.id, 1)">加入購物車</a>
+                        @click.prevent="addCartItem(item.id)">加入購物車</a>
                     </div>
                   </div>
                 </div>

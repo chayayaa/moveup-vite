@@ -1,7 +1,10 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { Field, Form, ErrorMessage, defineRule, configure } from 'vee-validate';
-import { required, email } from '@vee-validate/rules';
+import { Field, Form, ErrorMessage, defineRule } from 'vee-validate';
+// import { required, email } from '@vee-validate/rules';
+import AllRules from '@vee-validate/rules';
+import { localize, setLocale } from '@vee-validate/i18n';
+import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 
 import App from './App.vue';
 import router from './router';
@@ -13,8 +16,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import './style/all.css';
 
 // 定義驗證規則
-defineRule('required', required);
-defineRule('email', email);
+// defineRule('required', required);
+// defineRule('email', email);
+// 使用 Object.keys 將 AllRules 轉為陣列並使用 forEach 迴圈將驗證規則加入 VeeValidate
+Object.keys(AllRules).forEach((rule) => {
+    defineRule(rule, AllRules[rule]);
+  });
 
 const app = createApp(App);
 

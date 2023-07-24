@@ -5,6 +5,7 @@ export const usePaginationStore = defineStore('pagination', {
         currentPage: 1,
         itemsPerPage: 6,
         totalPages: 0,
+        filteredItems: [],
     }),
     getters: {
         hasPreviousPage(state) {
